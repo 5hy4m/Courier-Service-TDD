@@ -39,10 +39,32 @@ class TestInputParser(unittest.TestCase):
                     "weight_in_kg": 5,
                     "distance_in_km": 5,
                     "offer_code": "OFR001",
-                }
+                },
+                {
+                    "id": "PKG2",
+                    "weight_in_kg": 15,
+                    "distance_in_km": 5,
+                    "offer_code": "OFR002",
+                },
+                {
+                    "id": "PKG3",
+                    "weight_in_kg": 10,
+                    "distance_in_km": 100,
+                    "offer_code": "OFR003",
+                },
             ],
             self.parser.parsePackages(3),
         )
+
+    @patch(
+        "builtins.input",
+        side_effect=[
+            "PKG1 weight distance OFR001",
+        ],
+    )
+    def test_parse_packages_with_incorrect_input(self, mock_input):
+        with self.assertRaises(ValueError):
+            self.parser.parsePackages(1)
 
 
 if __name__ == "__main__":
