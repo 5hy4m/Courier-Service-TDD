@@ -1,14 +1,21 @@
 from input_parser import InputParser
+from package_manager import PackageManager
+from package import Package
+from offer import Offer
 
 
-class Main:
-    def run():
-        parser = InputParser()
-        base_delivery_cost, no_of_packages = parser.parseFirstLine(input())
-        packages = parser.parsePackages(no_of_packages)
+def main():
+    parse = InputParser()
+    base_delivery_cost, no_of_packages = parse.firstLine(input())
+    packages = parse.packages(no_of_packages)
+    offers = parse.offers()
 
-        pass
+    manager = PackageManager()
+    manager.createPackageObjects(packages)
+    manager.createOfferObjects(offers)
+
+    pass
 
 
 if __name__ == "__main__":
-    Main.run()
+    main()

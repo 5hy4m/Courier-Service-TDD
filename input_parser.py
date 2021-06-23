@@ -1,3 +1,6 @@
+import json
+
+
 class InputParser:
     def typeConvert(self, element, datatype):
         try:
@@ -5,7 +8,7 @@ class InputParser:
         except Exception as error:
             raise ValueError(error)
 
-    def parseFirstLine(self, first_line):
+    def firstLine(self, first_line):
         base_delivery_cost, no_of_packages = first_line.split(" ")
 
         base_delivery_cost = self.typeConvert(base_delivery_cost, int)
@@ -13,7 +16,7 @@ class InputParser:
 
         return (base_delivery_cost, no_of_packages)
 
-    def parsePackages(self, no_of_packages):
+    def packages(self, no_of_packages):
         packages = []
         for _ in range(no_of_packages):
             id, weight_in_kg, distance_in_km, offer_code = input().split(" ")
@@ -25,5 +28,12 @@ class InputParser:
                     "offer_code": offer_code,
                 }
             )
-
         return packages
+
+    def offers(self):
+        try:
+            with open("offers.json") as f:
+                offers = json.load(f)
+            return offers
+        except FileNotFoundError as error:
+            raise error
