@@ -2,7 +2,8 @@ import json
 
 
 class InputParser:
-    def typeConvert(self, element, datatype):
+    @staticmethod
+    def typeConvert(element, datatype):
         try:
             return datatype(element)
         except Exception as error:
@@ -30,10 +31,30 @@ class InputParser:
             )
         return packages
 
-    def offers(self):
+    @staticmethod
+    def readOffers():
         try:
             with open("offers.json") as f:
                 offers = json.load(f)
             return offers
         except FileNotFoundError as error:
             raise error
+
+    @classmethod
+    def offers(cls):
+        offers = cls.readOffers()
+        for offer in offers:
+            offer["lower_limit_distance"] = cls.typeConvert(
+                offer["lower_limit_distance"], int
+            )
+            offer["upper_limit_distance"] = cls.typeConvert(
+                offer["upper_limit_distance"], int
+            )
+            offer["lower_limit_weight"] = cls.typeConvert(
+                offer["lower_limit_weight"], int
+            )
+            offer["upper_limit_weight"] = cls.typeConvert(
+                offer["upper_limit_weight"], int
+            )
+            offer["discount"] = cls.typeConvert(offer["discount"], float)
+        return offers

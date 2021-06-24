@@ -9,7 +9,11 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from tests.constants import PACKAGES_ARRAY_OF_OBJECTS, OFFERS_ARRAY_OF_OBJECTS
+from tests.constants import (
+    PACKAGES_ARRAY_OF_OBJECTS,
+    OFFERS_ARRAY_OF_OBJECTS,
+    PARSED_OFFERS_ARRAY_OF_OBJECTS,
+)
 from input_parser import InputParser
 
 
@@ -52,7 +56,7 @@ class TestInputParser(unittest.TestCase):
         read_data = json.dumps(OFFERS_ARRAY_OF_OBJECTS)
         mock_open = mock.mock_open(read_data=read_data)
         with mock.patch("builtins.open", mock_open):
-            self.assertEqual(OFFERS_ARRAY_OF_OBJECTS, self.parse.offers())
+            self.assertEqual(PARSED_OFFERS_ARRAY_OF_OBJECTS, self.parse.offers())
 
 
 if __name__ == "__main__":

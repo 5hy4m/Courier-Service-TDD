@@ -1,6 +1,5 @@
 class Offer:
     def __init__(self, offer):
-        print(offer)
         self.code = offer["code"]
         self.discount = offer["discount"]
         self.lower_limit_distance = offer["lower_limit_distance"]

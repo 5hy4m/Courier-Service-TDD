@@ -11,8 +11,8 @@ def main():
     offers = parse.offers()
 
     manager = PackageManager()
-    manager.createPackageObjects(packages)
-    manager.createOfferObjects(offers)
+    offers = manager.createOfferObjects(offers)
+    packages = manager.createPackageObjects(packages, offers)
 
     pass
 
