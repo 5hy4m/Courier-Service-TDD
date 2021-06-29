@@ -1,35 +1,77 @@
 import json
+from offer import Offer
+from package import Package
 
 
 class InputParser:
+    def __init__(self):
+        self.base_delivery_cost = 0
+        self.no_of_packages = 0
+        self.packages = []
+        self.offers = []
+
+    def invoke(self):
+        self.firstLine(input())
+        self.extractOffers()
+        self.extractPackages()
+        return (
+            self.base_delivery_cost,
+            self.no_of_packages,
+            self.packages,
+            self.offers,
+        )
+
+    def firstLine(self, first_line):
+        self.base_delivery_cost, self.no_of_packages = first_line.split(" ")
+
+        self.base_delivery_cost = self.typeConvert(self.base_delivery_cost, int)
+        self.no_of_packages = self.typeConvert(self.no_of_packages, int)
+
+        return (self.base_delivery_cost, self.no_of_packages)
+
+    def getOfferObject(self, package_code):
+        for offer in self.offers:
+            if offer.code == package_code:
+                return offer
+
+    def extractPackages(self):
+        for _ in range(self.no_of_packages):
+            id, weight, distance, offer_code = input().split(" ")
+            self.packages.append(
+                Package(
+                    {
+                        "id": id,
+                        "weight": self.typeConvert(weight, int),
+                        "distance": self.typeConvert(distance, float),
+                        "offer_code": self.getOfferObject(offer_code),
+                    }
+                )
+            )
+
+    def extractOffers(self):
+        self.offers = self.readOffers()
+        for index, offer in enumerate(self.offers):
+            offer["lower_limit_distance"] = self.typeConvert(
+                offer["lower_limit_distance"], int
+            )
+            offer["upper_limit_distance"] = self.typeConvert(
+                offer["upper_limit_distance"], int
+            )
+            offer["lower_limit_weight"] = self.typeConvert(
+                offer["lower_limit_weight"], int
+            )
+            offer["upper_limit_weight"] = self.typeConvert(
+                offer["upper_limit_weight"], int
+            )
+            offer["discount"] = self.typeConvert(offer["discount"], float)
+            self.offers[index] = Offer(offer)
+
     @staticmethod
     def typeConvert(element, datatype):
         try:
             return datatype(element)
         except Exception as error:
             raise ValueError(error)
-
-    def firstLine(self, first_line):
-        base_delivery_cost, no_of_packages = first_line.split(" ")
-
-        base_delivery_cost = self.typeConvert(base_delivery_cost, int)
-        no_of_packages = self.typeConvert(no_of_packages, int)
-
-        return (base_delivery_cost, no_of_packages)
-
-    def packages(self, no_of_packages):
-        packages = []
-        for _ in range(no_of_packages):
-            id, weight_in_kg, distance_in_km, offer_code = input().split(" ")
-            packages.append(
-                {
-                    "id": id,
-                    "weight_in_kg": self.typeConvert(weight_in_kg, int),
-                    "distance_in_km": self.typeConvert(distance_in_km, float),
-                    "offer_code": offer_code,
-                }
-            )
-        return packages
 
     @staticmethod
     def readOffers():
@@ -39,22 +81,3 @@ class InputParser:
             return offers
         except FileNotFoundError as error:
             raise error
-
-    @classmethod
-    def offers(cls):
-        offers = cls.readOffers()
-        for offer in offers:
-            offer["lower_limit_distance"] = cls.typeConvert(
-                offer["lower_limit_distance"], int
-            )
-            offer["upper_limit_distance"] = cls.typeConvert(
-                offer["upper_limit_distance"], int
-            )
-            offer["lower_limit_weight"] = cls.typeConvert(
-                offer["lower_limit_weight"], int
-            )
-            offer["upper_limit_weight"] = cls.typeConvert(
-                offer["upper_limit_weight"], int
-            )
-            offer["discount"] = cls.typeConvert(offer["discount"], float)
-        return offers

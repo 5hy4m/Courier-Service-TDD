@@ -11,8 +11,3 @@ parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
 from offer import Offer
-
-
-class TestOffer(unittest.TestCase):
-    def test_read_offer(self):
-        self.assertEqual(PARSED_OFFERS_ARRAY_OF_OBJECTS, InputParser.offers())

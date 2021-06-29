@@ -1,20 +1,20 @@
 PACKAGES_ARRAY_OF_OBJECTS = [
     {
         "id": "PKG1",
-        "weight_in_kg": 5,
-        "distance_in_km": 5,
+        "weight": 5,
+        "distance": 5,
         "offer_code": "OFR001",
     },
     {
         "id": "PKG2",
-        "weight_in_kg": 15,
-        "distance_in_km": 5,
+        "weight": 15,
+        "distance": 5,
         "offer_code": "OFR002",
     },
     {
         "id": "PKG3",
-        "weight_in_kg": 10,
-        "distance_in_km": 100,
+        "weight": 10,
+        "distance": 100,
         "offer_code": "OFR003",
     },
 ]

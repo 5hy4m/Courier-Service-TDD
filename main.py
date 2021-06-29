@@ -5,16 +5,12 @@ from offer import Offer
 
 
 def main():
-    parse = InputParser()
-    base_delivery_cost, no_of_packages = parse.firstLine(input())
-    packages = parse.packages(no_of_packages)
-    offers = parse.offers()
+    base_delivery_cost, no_of_packages, packages, offers = InputParser().invoke()
 
     manager = PackageManager()
-    offers = manager.createOfferObjects(offers)
-    packages = manager.createPackageObjects(packages, offers)
-
-    pass
+    # offers = manager.createOfferObjects(offers)
+    offers = Offer.createObjects(offers, Offer)
+    # packages = manager.createPackageObjects(packages, offers)
 
 
 if __name__ == "__main__":

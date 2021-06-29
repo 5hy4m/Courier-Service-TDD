@@ -2,6 +2,7 @@ import unittest
 import os
 import sys
 from unittest.mock import patch
+from unittest import mock
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
@@ -9,7 +10,9 @@ sys.path.append(parentdir)
 
 from package_manager import PackageManager
 from input_parser import InputParser
+from mock import InputMock
 from package import Package
+from offer import Offer
 from tests.constants import (
     PACKAGES_ARRAY_OF_OBJECTS,
     OFFERS_ARRAY_OF_OBJECTS,
@@ -18,19 +21,19 @@ from tests.constants import (
 
 
 class TestPackageManager(unittest.TestCase):
-    def setUp(self):
+    @mock.patch("builtins.input")
+    def setUp(self, mock_input):
+        InputMock.execute(mock_input)
         self.package_manager = PackageManager()
-        self.input_parser = InputParser()
-        self.base_delivery_cost = 100
-        self.offers = self.package_manager.createOfferObjects(
-            PARSED_OFFERS_ARRAY_OF_OBJECTS
-        )
-        self.packages = self.package_manager.createPackageObjects(
-            PACKAGES_ARRAY_OF_OBJECTS, self.offers
-        )
+        (
+            self.base_delivery_cost,
+            self.no_of_packages,
+            self.packages,
+            self.offers,
+        ) = InputParser().invoke()
 
     def test_calculate_delivery_cost_of_packages(self):
-        output = self.package_manager.calculateDeliveryCost(
+        output = self.package_manager.calculateTotalDeliveryCost(
             self.packages, self.offers, self.base_delivery_cost
         )
         self.assertEqual(output[0].discount, 0)
