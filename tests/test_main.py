@@ -14,7 +14,8 @@ from tests.constants import PACKAGES_ARRAY_OF_OBJECTS, OFFERS_ARRAY_OF_OBJECTS
 
 
 class TestMainFunction(unittest.TestCase):
-    manager = PackageManager()
+    # manager = PackageManager()
+    pass
 
     # def test_create_packages(self):
     #     packages = PACKAGES_ARRAY_OF_OBJECTS

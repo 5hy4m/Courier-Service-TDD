@@ -24,18 +24,18 @@ class TestPackageManager(unittest.TestCase):
     @mock.patch("builtins.input")
     def setUp(self, mock_input):
         InputMock.execute(mock_input)
-        self.package_manager = PackageManager()
         (
             self.base_delivery_cost,
             self.no_of_packages,
             self.packages,
             self.offers,
         ) = InputParser().invoke()
+        self.manager = PackageManager(
+            self.base_delivery_cost, self.packages, self.offers
+        )
 
     def test_calculate_delivery_cost_of_packages(self):
-        output = self.package_manager.calculateTotalDeliveryCost(
-            self.packages, self.offers, self.base_delivery_cost
-        )
+        output = self.manager.calculateTotalDeliveryCost()
         self.assertEqual(output[0].discount, 0)
         self.assertEqual(output[1].discount, 0)
         self.assertEqual(output[2].discount, 35)
