@@ -15,6 +15,8 @@ from tests.constants import (
     PARSED_OFFERS_ARRAY_OF_OBJECTS,
 )
 from input_parser import InputParser
+from mock import InputMock
+from vehicle import Vehicle
 
 
 class TestInputParser(unittest.TestCase):
@@ -33,15 +35,9 @@ class TestInputParser(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.parse.firstLine("Hi This Should Give Error")
 
-    @mock.patch(
-        "builtins.input",
-        side_effect=[
-            "PKG1 5 5 OFR001",
-            "PKG2 15 5 OFR002",
-            "PKG3 10 100 OFR003",
-        ],
-    )
+    @mock.patch("builtins.input")
     def test_parse_packages_with_correct_input(self, mock_input):
+        InputMock.execute(mock_input, "packages")
 
         self.parse.no_of_packages = len(PACKAGES_ARRAY_OF_OBJECTS)
         self.parse.extractOffers()
@@ -97,6 +93,17 @@ class TestInputParser(unittest.TestCase):
                 PARSED_OFFERS_ARRAY_OF_OBJECTS[second_element]["upper_limit_weight"],
                 self.parse.offers[second_element].upper_limit_weight,
             )
+
+    @mock.patch(
+        "builtins.input",
+        side_effect=["2 70 200"],
+    )
+    def test_parse_vehicles(self, mock_input):
+        self.parse.extractVehicles()
+        for vehicle in self.parse.vehicles:
+            self.assertIsInstance(vehicle, Vehicle)
+            self.assertEqual(vehicle.speed, 70)
+            self.assertEqual(vehicle.max_weight, 200)
 
 
 if __name__ == "__main__":

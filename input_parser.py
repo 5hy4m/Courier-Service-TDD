@@ -1,6 +1,7 @@
 import json
 from offer import Offer
 from package import Package
+from vehicle import Vehicle
 
 
 class InputParser:
@@ -9,16 +10,19 @@ class InputParser:
         self.no_of_packages = 0
         self.packages = []
         self.offers = []
+        self.vehicles = []
 
     def invoke(self):
         self.firstLine(input())
         self.extractOffers()
         self.extractPackages()
+        self.extractVehicles()
         return (
             self.base_delivery_cost,
             self.no_of_packages,
             self.packages,
             self.offers,
+            self.vehicles,
         )
 
     def firstLine(self, first_line):
@@ -36,7 +40,8 @@ class InputParser:
 
     def extractPackages(self):
         for _ in range(self.no_of_packages):
-            id, weight, distance, offer_code = input().split(" ")
+            inputs = input()
+            id, weight, distance, offer_code = inputs.split(" ")
             self.packages.append(
                 Package(
                     {
@@ -65,6 +70,15 @@ class InputParser:
             )
             offer["discount"] = self.typeConvert(offer["discount"], float)
             self.offers[index] = Offer(offer)
+
+    def extractVehicles(self):
+        no_of_vehicles, speed, max_weight = input().split(" ")
+        no_of_vehicles = self.typeConvert(no_of_vehicles, int)
+        max_weight = self.typeConvert(max_weight, int)
+        speed = self.typeConvert(speed, int)
+
+        for _ in range(no_of_vehicles):
+            self.vehicles.append(Vehicle(speed, max_weight))
 
     @staticmethod
     def typeConvert(element, datatype):

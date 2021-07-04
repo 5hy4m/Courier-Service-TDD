@@ -72,3 +72,8 @@ PARSED_OFFERS_ARRAY_OF_OBJECTS = [
         "upper_limit_weight": 150,
     },
 ]
+
+OUTPUT = """PKG1 0 175
+PKG2 0 275
+PKG3 35 665
+"""

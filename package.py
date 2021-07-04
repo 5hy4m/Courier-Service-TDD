@@ -6,6 +6,7 @@ class Package:
         self.offer_code = package["offer_code"]
         self.discount = 0.0
         self.delivery_cost = 0
+        self.delivery_time = 0
 
     def calculateDeliveryCost(self, base_delivery_cost):
         self.delivery_cost = (

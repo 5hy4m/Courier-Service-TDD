@@ -19,3 +19,6 @@ class PackageManager:
                     package.calculateDiscount()
         else:
             return self.packages
+
+    def estimateDeliveryTime(self):
+        pass

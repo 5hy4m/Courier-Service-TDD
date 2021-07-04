@@ -29,6 +29,7 @@ class TestPackageManager(unittest.TestCase):
             self.no_of_packages,
             self.packages,
             self.offers,
+            self.vehicles,
         ) = InputParser().invoke()
         self.manager = PackageManager(
             self.base_delivery_cost, self.packages, self.offers
