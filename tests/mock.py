@@ -9,6 +9,15 @@ class InputMock:
                 "PKG2 15 5 OFR002",
                 "PKG3 10 100 OFR003",
             ]
+        elif data is "algorithm":
+            mock_input.side_effect = [
+                "100 4",
+                "PKG1 1 5 OFR001",
+                "PKG2 1 5 OFR002",
+                "PKG3 2 100 OFR003",
+                "PKG3 4 100 OFR003",
+                "2 4 200",
+            ]
         else:
             mock_input.side_effect = [
                 "100 3",

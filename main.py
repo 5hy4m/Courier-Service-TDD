@@ -2,7 +2,6 @@ from input_parser import InputParser
 
 # from output_parser import OutputParser
 from package_manager import PackageManager
-from package_manager import PackageManager
 
 
 def printOutput(packages):

@@ -11,14 +11,16 @@ class PackageManager:
 
     def calculateTotalDeliveryCost(self):
         for package in self.packages:
+            offer_code = package.offer_code
             package.calculateDeliveryCost(self.base_delivery_cost)
-            if package.offer_code.isOfferCodeExist(self.offers):
-                if package.offer_code.isOfferCodeValid(
-                    package.weight, package.distance
-                ):
-                    package.calculateDiscount()
+            if offer_code.isOfferCodeExist(self.offers) and offer_code.isOfferCodeValid(
+                package.weight,
+                package.distance,
+            ):
+                package.calculateDiscount()
         else:
             return self.packages
 
     def estimateDeliveryTime(self):
+
         pass
