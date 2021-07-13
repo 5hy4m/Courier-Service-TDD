@@ -30,9 +30,7 @@ class TestAlgorithm(unittest.TestCase):
     def test_build_2d_matrix(self):
         no_of_packages = 3
         max_weight = 2
-        result = ArrayOperation().build2dMatrixWithZeroValues(
-            no_of_packages, max_weight
-        )
+        result = ArrayOperation.build2dMatrixWithZeroValues(no_of_packages, max_weight)
         self.assertEqual(result, ARRAY_2D)
 
     def test_built_2d_array(self):

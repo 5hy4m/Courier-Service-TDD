@@ -3,7 +3,7 @@ from array_operation import ArrayOperation
 
 class Algorithm:
     def __init__(self, no_of_packages, max_weight, packages):
-        self.array_ops = ArrayOperation()
+        self.array_ops = ArrayOperation
         self.no_of_rows = no_of_packages
         self.no_of_columns = max_weight
         self.packages = packages
@@ -13,42 +13,35 @@ class Algorithm:
 
     def start(self):
         self.solve(0, 0)
-        self.print_array()
-        return self.array_2d
+        self.print_array(self.array_2d)
         print("DONE")
+        return self.array_2d
 
-    def print_array(self):
-        for row in self.array_2d:
+    def print_array(self, array_2d):
+        for row in array_2d:
             print(row)
 
-    def is_end_of_column(self, col):
-        return col > self.no_of_columns
-
     def solve(self, row, col):
-        if self.is_end_of_column(col):
+        array_ops = ArrayOperation(row, col)
+        if array_ops.is_end_of_columns(self.no_of_columns):
             return self.solve(row + 1, 0)
 
-        if row > self.no_of_rows:
-            return
+        if array_ops.is_end_of_rows(self.no_of_rows):
+            return array_ops
 
-        if row == 0 or col == 0:
-            self.array_2d[row][col] = 0
+        if array_ops.is_maximum_capacity_of_cell_or_weight_is_zero():
+            array_ops.assign_zero(self.array_2d)
             return self.solve(row, col + 1)
 
-        if (
-            self.packages[row - 1].weight
-            + self.array_2d[row - 1][col - self.packages[row - 1].weight]
-            <= col
+        if array_ops.can_add_more_package_in_current_weight(
+            self.array_2d, self.packages
         ):
-            self.array_2d[row][col] = (
-                self.packages[row - 1].weight
-                + self.array_2d[row - 1][col - self.packages[row - 1].weight]
-            )
+            array_ops.assign_current_package_weight(self.array_2d, self.packages)
             return self.solve(row, col + 1)
 
-        if self.packages[row - 1].weight <= col:
-            self.array_2d[row][col] = self.packages[row - 1].weight
+        if array_ops.is_package_weight_less_than_current_weight(self.packages):
+            array_ops.assign_package_weight(self.array_2d)
             return self.solve(row, col + 1)
         else:
-            self.array_2d[row][col] = self.array_2d[row - 1][col]
+            array_ops.assign_previous_weight(self.array_2d)
             return self.solve(row, col + 1)
