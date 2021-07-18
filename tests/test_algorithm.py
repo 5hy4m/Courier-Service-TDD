@@ -37,4 +37,24 @@ class TestAlgorithm(unittest.TestCase):
         no_of_packages = 4
         max_weight = 4
         result_2d = Algorithm(no_of_packages, max_weight, self.packages).start()
+
+        # for row in range(no_of_packages + 1):
+        #     for col in range(max_weight + 1):
+        #         packages = []
+        #         for package in result_2d[row][col].packages:
+        #             packages.append(package.weight)
+        #         result_2d[row][col] = packages
+
+        # for row in result_2d:
+        #     row_ele = []
+        #     for ele in row:
+        #         row_ele.append(ele)
+        #     print(row_ele)
+        # import pdb
+
+        # pdb.set_trace()
+
+        for row in range(no_of_packages + 1):
+            for col in range(max_weight + 1):
+                result_2d[row][col] = result_2d[row][col].weight
         self.assertEqual(result_2d, SOLVED_ARRAY)

@@ -1,4 +1,8 @@
-class ArrayOperation:
+import functools
+from array_operation_helpers import ArrayOpsHelpers
+
+
+class ArrayOperation(ArrayOpsHelpers):
     def __init__(self, array_2d, row, col):
         self.row = row
         self.col = col
@@ -19,25 +23,83 @@ class ArrayOperation:
 
     def can_add_more_package_in_current_weight(self, packages):
         return (
-            packages[self.row - 1].weight
-            + self.array_2d[self.row - 1][self.col - packages[self.row - 1].weight]
+            self.get_current_package(packages).weight
+            + self.previous_package_combination(packages).weight
             <= self.col
         )
 
-    def is_package_weight_less_than_current_weight(self, packages):
-        return packages[self.row - 1].weight <= self.col
+    def is_current_combination_has_max_packages(self, packages):
+        return len(self.current_combination(packages)) >= len(
+            self.previous_package_with_same_weight.packages
+        )
+
+    def is_current_package_weight_can_contain_in_current_max_weight(self, packages):
+        return self.get_current_package(packages).weight <= self.col
 
     def assign_zero(self):
-        self.array_2d[self.row][self.col] = 0
+        self.array_2d[self.row][self.col] = CellValue(0)
 
-    def assign_package_weight(self):
-        self.array_2d[self.row][self.col] = self.packages[self.row - 1].weight
-
-    def assign_previous_weight(self):
-        self.array_2d[self.row][self.col] = self.array_2d[self.row - 1][self.col]
-
-    def assign_current_package_weight(self, packages):
-        self.array_2d[self.row][self.col] = (
-            packages[self.row - 1].weight
-            + self.array_2d[self.row - 1][self.col - packages[self.row - 1].weight]
+    def assign_current_package(self, packages):
+        self.array_2d[self.row][self.col] = CellValue(
+            self.get_current_package(packages)
         )
+
+    def assign_previous_package(self):
+        self.array_2d[self.row][self.col] = CellValue(
+            self.previous_package_with_same_weight
+        )
+
+    def assign_current_combination(self, packages):
+        self.array_2d[self.row][self.col] = CellValue(
+            self.previous_package_combination(packages),
+            self.get_current_package(packages),
+        )
+
+    def assign_previous_combination(self, packages):
+        self.array_2d[self.row][self.col] = CellValue(
+            self.previous_package_with_same_weight,
+        )
+
+
+# class CellValue:
+#     def __init__(self):
+#         self.package = []
+#         self.weight = 0
+
+#     @property
+#     def update_weight(self):
+#         weight_array = [package.weight for package in self.packages]
+#         self.weight = functools.reduce(self.add, weight_array)
+
+#     @staticmethod
+#     def add(a, b):
+#         return a + b
+
+#     def add_package_to_the_cell_value(self, instance, package):
+#         self.packages = instance1.packages + [package]
+#         self.update_weight
+
+#     def assign_cell_value(self, instance):
+#         self.packages = instance.packages
+#         self.update_weight
+
+
+class CellValue:
+    def __init__(self, instance1, package=None):
+        if isinstance(instance1, CellValue):
+            if not package:
+                self.packages = instance1.packages
+            else:
+                self.packages = instance1.packages + [package]
+            if len(self.packages) != 0:
+                weight_array = [package.weight for package in self.packages]
+                self.weight = functools.reduce(self.add, weight_array)
+            else:
+                self.weight = 0
+        else:
+            self.packages = []
+            self.weight = 0
+
+    @staticmethod
+    def add(a, b):
+        return a + b

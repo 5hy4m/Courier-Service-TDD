@@ -19,7 +19,10 @@ class Algorithm:
 
     def print_array(self, array_2d):
         for row in array_2d:
-            print(row)
+            row_ele = []
+            for ele in row:
+                row_ele.append(ele.weight)
+            print(row_ele)
 
     def solve(self, row, col):
         array_ops = ArrayOperation(self.array_2d, row, col)
@@ -34,12 +37,17 @@ class Algorithm:
             return self.solve(row, col + 1)
 
         if array_ops.can_add_more_package_in_current_weight(self.packages):
-            array_ops.assign_current_package_weight(self.packages)
+            if array_ops.is_current_combination_has_max_packages(self.packages):
+                array_ops.assign_current_combination(self.packages)
+            else:
+                array_ops.assign_previous_combination(self.packages)
             return self.solve(row, col + 1)
 
-        if array_ops.is_package_weight_less_than_current_weight(self.packages):
-            array_ops.assign_package_weight()
+        if array_ops.is_current_package_weight_can_contain_in_current_max_weight(
+            self.packages
+        ):
+            array_ops.assign_current_package(self.packages)
             return self.solve(row, col + 1)
         else:
-            array_ops.assign_previous_weight()
+            array_ops.assign_previous_package()
             return self.solve(row, col + 1)
