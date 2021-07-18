@@ -25,29 +25,61 @@ class Algorithm:
             print(row_ele)
 
     def solve(self, row, col):
-        array_ops = ArrayOperation(self.array_2d, row, col)
-        if array_ops.is_end_of_columns(self.no_of_columns):
-            return self.solve(row + 1, 0)
+        for row in range(self.no_of_rows + 1):
+            for col in range(self.no_of_columns + 1):
+                array_ops = ArrayOperation(self.array_2d, row, col)
 
-        if array_ops.is_end_of_rows(self.no_of_rows):
-            return array_ops
+                if array_ops.is_end_of_columns(self.no_of_columns):
+                    continue
 
-        if array_ops.is_maximum_capacity_of_cell_is_zero():
-            array_ops.assign_zero()
-            return self.solve(row, col + 1)
+                if array_ops.is_end_of_rows(self.no_of_rows):
+                    continue
 
-        if array_ops.can_add_more_package_in_current_weight(self.packages):
-            if array_ops.is_current_combination_has_max_packages(self.packages):
-                array_ops.assign_current_combination(self.packages)
-            else:
-                array_ops.assign_previous_combination(self.packages)
-            return self.solve(row, col + 1)
+                if array_ops.is_maximum_capacity_of_cell_is_zero():
+                    array_ops.assign_zero()
+                    continue
 
-        if array_ops.is_current_package_weight_can_contain_in_current_max_weight(
-            self.packages
-        ):
-            array_ops.assign_current_package(self.packages)
-            return self.solve(row, col + 1)
-        else:
-            array_ops.assign_previous_package()
-            return self.solve(row, col + 1)
+                if array_ops.can_add_more_package_in_current_weight(self.packages):
+                    if array_ops.is_current_combination_has_max_packages(self.packages):
+                        array_ops.assign_current_combination(self.packages)
+                    else:
+                        array_ops.assign_previous_combination(self.packages)
+                    continue
+
+                if array_ops.is_current_package_weight_can_contain_in_current_max_weight(
+                    self.packages
+                ):
+                    array_ops.assign_current_package(self.packages)
+                    continue
+                else:
+                    array_ops.assign_previous_package()
+                    continue
+
+    # def solve(self, row, col):
+    #     array_ops = ArrayOperation(self.array_2d, row, col)
+
+    #     if array_ops.is_end_of_columns(self.no_of_columns):
+    #         return self.solve(row + 1, 0)
+
+    #     if array_ops.is_end_of_rows(self.no_of_rows):
+    #         return
+
+    #     if array_ops.is_maximum_capacity_of_cell_is_zero():
+    #         array_ops.assign_zero()
+    #         return self.solve(row, col + 1)
+
+    #     if array_ops.can_add_more_package_in_current_weight(self.packages):
+    #         if array_ops.is_current_combination_has_max_packages(self.packages):
+    #             array_ops.assign_current_combination(self.packages)
+    #         else:
+    #             array_ops.assign_previous_combination(self.packages)
+    #         return self.solve(row, col + 1)
+
+    #     if not array_ops.is_current_package_weight_can_contain_in_current_max_weight(
+    #         self.packages
+    #     ):
+    #         array_ops.assign_current_package(self.packages)
+    #         return self.solve(row, col + 1)
+    #     else:
+    #         array_ops.assign_previous_package()
+    #         return self.solve(row, col + 1)

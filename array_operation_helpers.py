@@ -7,7 +7,7 @@ class ArrayOpsHelpers:
         return packages[self.row - 1]
 
     @property
-    def previous_package_with_same_weight(self):
+    def previous_package_combination_with_same_weight(self):
         return self.array_2d[self.previous_package][self.col]
 
     def previous_package_combination(self, packages):

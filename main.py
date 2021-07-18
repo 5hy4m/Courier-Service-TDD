@@ -19,7 +19,7 @@ def main():
     ) = InputParser().invoke()
     manager = PackageManager(base_delivery_cost, packages, offers)
     manager.calculateTotalDeliveryCost()
-    manager.estimateDeliveryTime()
+    manager.estimate_delivery_time(vehicles)
     printOutput(packages)
 
 

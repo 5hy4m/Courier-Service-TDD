@@ -1,5 +1,6 @@
 from offer import Offer
 from package import Package
+from algorithm import Algorithm
 
 
 class PackageManager:
@@ -7,7 +8,6 @@ class PackageManager:
         self.packages = packages
         self.offers = offers
         self.base_delivery_cost = base_delivery_cost
-        self.package_class = Package
 
     def calculateTotalDeliveryCost(self):
         for package in self.packages:
@@ -21,6 +21,8 @@ class PackageManager:
         else:
             return self.packages
 
-    def estimateDeliveryTime(self):
-
-        pass
+    def estimate_delivery_time(self, vehicles):
+        max_weight = vehicles[0].max_weight
+        is_done = True
+        combination = Algorithm(len(self.packages), max_weight, self.packages).start()
+        return combination

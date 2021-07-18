@@ -16,7 +16,7 @@ class InputMock:
                 "PKG2 1 5 OFR002",
                 "PKG3 2 100 OFR003",
                 "PKG3 4 100 OFR003",
-                "2 4 200",
+                "2 4 4",
             ]
         else:
             mock_input.side_effect = [
