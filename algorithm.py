@@ -15,7 +15,6 @@ class Algorithm:
         self.solve(0, 0)
         self.print_array(self.array_2d)
         print("DONE")
-        return self.array_2d
 
     def print_array(self, array_2d):
         for row in array_2d:
@@ -23,6 +22,9 @@ class Algorithm:
             for ele in row:
                 row_ele.append(ele.weight)
             print(row_ele)
+
+    def find(self):
+        return self.array_2d[-1][-1]
 
     def solve(self, row, col):
         for row in range(self.no_of_rows + 1):
@@ -42,6 +44,23 @@ class Algorithm:
                 if array_ops.can_add_more_package_in_current_weight(self.packages):
                     if array_ops.is_current_combination_has_max_packages(self.packages):
                         array_ops.assign_current_combination(self.packages)
+                    elif array_ops.is_current_combination_has_same_no_of_packages(
+                        self.packages
+                    ):
+                        if array_ops.is_current_combination_has_max_weight:
+                            array_ops.assign_current_combination(self.packages)
+                        elif array_ops.is_current_combination_has_same_weight:
+                            if (
+                                array_ops.current_combination_delivery_time(
+                                    self.packages
+                                )
+                                <= array_ops.previous_combination_with_same_weight_delivery_time()
+                            ):
+                                array_ops.assign_current_combination(self.packages)
+                            else:
+                                array_ops.assign_previous_combination(self.packages)
+                        else:
+                            array_ops.assign_previous_combination(self.packages)
                     else:
                         array_ops.assign_previous_combination(self.packages)
                     continue

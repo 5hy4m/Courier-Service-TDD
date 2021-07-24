@@ -27,10 +27,8 @@ class InputParser:
 
     def firstLine(self, first_line):
         self.base_delivery_cost, self.no_of_packages = first_line.split(" ")
-
         self.base_delivery_cost = self.typeConvert(self.base_delivery_cost, int)
         self.no_of_packages = self.typeConvert(self.no_of_packages, int)
-
         return (self.base_delivery_cost, self.no_of_packages)
 
     def getOfferObject(self, package_code):
@@ -77,7 +75,7 @@ class InputParser:
         max_weight = self.typeConvert(max_weight, int)
         speed = self.typeConvert(speed, int)
 
-        for _ in range(no_of_vehicles):
+        for _ in range(no_of_vehicles - 1):
             self.vehicles.append(Vehicle(speed, max_weight))
 
     @staticmethod

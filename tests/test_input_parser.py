@@ -102,7 +102,7 @@ class TestInputParser(unittest.TestCase):
         self.parse.extractVehicles()
         for vehicle in self.parse.vehicles:
             self.assertIsInstance(vehicle, Vehicle)
-            self.assertEqual(vehicle.speed, 70)
+            self.assertEqual(vehicle.max_speed, 70)
             self.assertEqual(vehicle.max_weight, 200)
 
 

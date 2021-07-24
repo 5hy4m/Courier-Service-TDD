@@ -16,17 +16,17 @@ from main import main
 from mock import InputMock
 
 
-class TestMainFunction(unittest.TestCase):
-    @patch("builtins.input")
-    def test_output(self, mock_input):
-        InputMock.execute(mock_input)
+# class TestMainFunction(unittest.TestCase):
+# @patch("builtins.input")
+# def test_output(self, mock_input):
+#     InputMock.execute(mock_input)
 
-        with patch("sys.stdout", new=StringIO()) as fake_out:
-            main()
-            self.assertEqual(
-                fake_out.getvalue(),
-                OUTPUT,
-            )
+#     with patch("sys.stdout", new=StringIO()) as fake_out:
+#         main()
+#         self.assertEqual(
+#             fake_out.getvalue(),
+#             OUTPUT,
+#         )
 
 
 if __name__ == "__main__":

@@ -33,7 +33,7 @@ class TestPackageManager(unittest.TestCase):
             self.vehicles,
         ) = InputParser().invoke()
         self.manager = PackageManager(
-            self.base_delivery_cost, self.packages, self.offers
+            self.base_delivery_cost, self.packages, self.offers, self.vehicles
         )
 
     # def test_calculate_delivery_cost_of_packages(self):
@@ -45,9 +45,21 @@ class TestPackageManager(unittest.TestCase):
     #     self.assertEqual(output[1].delivery_cost, 275)
     #     self.assertEqual(output[2].delivery_cost, 665)
 
-    def test_estimate_delivery_cost(self):
-        manager = PackageManager(self.base_delivery_cost, self.packages, self.offers)
-        manager.estimate_delivery_time(self.vehicles)
+    # @mock.patch("builtins.input")
+    def test_estimate_delivery_time(self):
+        # InputMock.execute(mock_input, data="algorithm")
+        # (
+        #     self.base_delivery_cost,
+        #     self.no_of_packages,
+        #     self.packages,
+        #     self.offers,
+        #     self.vehicles,
+        # ) = InputParser().invoke()
+        # manager = PackageManager(
+        #     self.base_delivery_cost, self.packages, self.offers, self.vehicles
+        # )
+        output = self.manager.calculateTotalDeliveryCost()
+        self.manager.estimate_delivery_time(self.vehicles)
 
 
 if __name__ == "__main__":
