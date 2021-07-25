@@ -34,13 +34,8 @@ class ArrayOpsHelpers:
 
     def current_shipment_delivery_time(self, packages):
         return_time = 2
-        delivery_time = max(
-            [
-                package.delivery_time
-                for package in self.previous_package_combination(
-                    self.packages
-                ).combination
-                + [self.get_current_package(self.packages)]
-            ]
+        delivery_time = (
+            self.previous_package_combination(self.packages).total_delivery_time
+            + self.get_current_package(self.packages).delivery_time
         )
         return delivery_time * return_time
