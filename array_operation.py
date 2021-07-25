@@ -3,10 +3,11 @@ from array_operation_helpers import ArrayOpsHelpers
 
 
 class ArrayOperation(ArrayOpsHelpers):
-    def __init__(self, array_2d, row, col):
+    def __init__(self, array_2d, row, col, packages):
         self.row = row
         self.col = col
         self.array_2d = array_2d
+        self.packages = packages
 
     @staticmethod
     def build2dMatrixWithZeroValues(no_of_columns, no_of_rows):
@@ -21,51 +22,60 @@ class ArrayOperation(ArrayOpsHelpers):
     def is_end_of_rows(self, no_of_rows):
         return self.row > no_of_rows
 
-    def can_add_more_package_in_current_weight(self, packages):
+    def base_check(self, no_of_rows, no_of_columns):
+        return self.is_end_of_rows(no_of_rows) or self.is_end_of_columns(no_of_columns)
+
+    def can_add_package_to_shipment(self):
         return (
-            self.get_current_package(packages).weight
-            + self.previous_package_combination(packages).weight
+            self.get_current_package(self.packages).weight
+            + self.previous_package_combination(self.packages).weight
             <= self.col
         )
 
-    def is_current_combination_has_same_no_of_packages(self, packages):
-        return len(self.current_combination(packages)) == len(
+    def is_current_shipment_has_same_no_of_packages(self):
+        return len(self.current_combination(self.packages)) == len(
             self.previous_package_combination_with_same_weight.packages
         )
 
-    def is_current_combination_has_max_packages(self, packages):
-        return len(self.current_combination(packages)) > len(
+    def is_current_shipment_has_max_packages(self):
+        return len(self.current_combination(self.packages)) > len(
             self.previous_package_combination_with_same_weight.packages
         )
 
-    def is_current_combination_has_max_weight(self, packages):
+    def is_current_shipment_has_max_weight(self):
 
-        return len(self.current_combination(packages).weight) > len(
+        return len(self.current_combination(self.packages).weight) > len(
             self.previous_package_combination_with_same_weight.weight
         )
 
-    def current_combination_delivery_time(self, packages):
+    def current_shipment_delivery_time(self):
         array = max(
             [
                 package.delivery_time
-                for package in self.previous_package_combination(packages).packages
-                + [self.get_current_package(packages)]
+                for package in self.previous_package_combination(self.packages).packages
+                + [self.get_current_package(self.packages)]
             ]
         )
         return array * 2
 
-    def previous_combination_with_same_weight_delivery_time(self):
+    def is_current_shipment_has_low_delivery_time(self):
+        return (
+            array_ops.current_shipment_delivery_time()
+            <= array_ops.previous_shipment_with_same_weight_delivery_time()
+        )
+
+    def previous_shipment_with_same_weight_delivery_time(self):
         return self.previous_package_combination_with_same_weight.total_delivery_time
 
-    def is_current_package_weight_can_contain_in_current_max_weight(self, packages):
-        return self.get_current_package(packages).weight <= self.col
+    def is_current_package_weight_can_contain_in_current_max_weight(self):
+        return self.get_current_package(self.packages).weight <= self.col
 
     def assign_zero(self):
         self.array_2d[self.row][self.col] = CellValue()
 
-    def assign_current_package(self, packages):
+    def assign_current_package(self):
         self.array_2d[self.row][self.col] = CellValue(
-            self.get_current_package(packages)
+            self.get_current_package(self.packages)
         )
 
     def assign_previous_package(self):
@@ -73,13 +83,13 @@ class ArrayOperation(ArrayOpsHelpers):
             self.col
         ] = self.previous_package_combination_with_same_weight
 
-    def assign_current_combination(self, packages):
+    def assign_current_shipment(self):
         self.array_2d[self.row][self.col] = CellValue().add_package_to_combination(
-            self.previous_package_combination(packages),
-            self.get_current_package(packages),
+            self.previous_package_combination(self.packages),
+            self.get_current_package(self.packages),
         )
 
-    def assign_previous_combination(self, packages):
+    def assign_previous_shipment(self):
         self.array_2d[self.row][
             self.col
         ] = self.previous_package_combination_with_same_weight
@@ -110,12 +120,3 @@ class CellValue:
         self.update_weight
         self.update_delivery_time
         return self
-
-    # def assign_combination(self, instance):
-    #     self.packages = instance.packages
-    #     import pdb
-
-    #     pdb.set_trace()
-    #     self.update_weight
-    #     self.update_delivery_time
-    #     return self
