@@ -38,53 +38,24 @@ class Algorithm:
                     array_ops.assign_zero()
 
                 elif array_ops.can_add_package_to_shipment():
-                    if array_ops.is_current_shipment_has_max_packages():
+                    if (
+                        array_ops.is_current_shipment_has_max_packages()
+                        or (
+                            array_ops.is_current_shipment_has_same_no_of_packages()
+                            and array_ops.is_current_shipment_has_max_weight
+                        )
+                        or (
+                            array_ops.is_current_shipment_has_same_weight()
+                            and array_ops.is_current_shipment_has_low_delivery_time()
+                        )
+                    ):
                         array_ops.assign_current_shipment()
-                    elif array_ops.is_current_shipment_has_same_no_of_packages():
-                        if array_ops.is_current_shipment_has_max_weight:
-                            array_ops.assign_current_shipment()
-                        elif array_ops.is_current_shipment_has_same_weight:
-                            if is_current_shipment_has_low_delivery_time():
-                                array_ops.assign_current_shipment()
-                            else:
-                                array_ops.assign_previous_shipment()
-                        else:
-                            array_ops.assign_previous_shipment()
                     else:
                         array_ops.assign_previous_shipment()
 
                 elif (
-                    array_ops.is_current_package_weight_can_contain_in_current_max_weight()
+                    array_ops.is_current_shipment_weight_can_contain_in_current_max_weight()
                 ):
                     array_ops.assign_current_package()
                 else:
-                    array_ops.assign_previous_package()
-
-    # def solve(self, row, col):
-    #     array_ops = ArrayOperation(self.array_2d, row, col)
-
-    #     if array_ops.is_end_of_columns(self.no_of_columns):
-    #         return self.solve(row + 1, 0)
-
-    #     if array_ops.is_end_of_rows(self.no_of_rows):
-    #         return
-
-    #     if array_ops.is_maximum_capacity_of_cell_is_zero():
-    #         array_ops.assign_zero()
-    #         return self.solve(row, col + 1)
-
-    #     if array_ops.can_add_package_to_shipment(self.packages):
-    #         if array_ops.is_current_shipment_has_max_packages(self.packages):
-    #             array_ops.assign_current_shipment(self.packages)
-    #         else:
-    #             array_ops.assign_previous_shipment(self.packages)
-    #         return self.solve(row, col + 1)
-
-    #     if not array_ops.is_current_package_weight_can_contain_in_current_max_weight(
-    #         self.packages
-    #     ):
-    #         array_ops.assign_current_package(self.packages)
-    #         return self.solve(row, col + 1)
-    #     else:
-    #         array_ops.assign_previous_package()
-    #         return self.solve(row, col + 1)
+                    array_ops.assign_previous_shipment()

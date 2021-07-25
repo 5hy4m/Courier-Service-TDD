@@ -16,12 +16,6 @@ class ArrayOperation(ArrayOpsHelpers):
     def is_maximum_capacity_of_cell_is_zero(self):
         return self.row == 0 or self.col == 0
 
-    def is_end_of_columns(self, no_of_columns):
-        return self.col > no_of_columns
-
-    def is_end_of_rows(self, no_of_rows):
-        return self.row > no_of_rows
-
     def base_check(self, no_of_rows, no_of_columns):
         return self.is_end_of_rows(no_of_rows) or self.is_end_of_columns(no_of_columns)
 
@@ -34,40 +28,36 @@ class ArrayOperation(ArrayOpsHelpers):
 
     def is_current_shipment_has_same_no_of_packages(self):
         return len(self.current_combination(self.packages)) == len(
-            self.previous_package_combination_with_same_weight.packages
+            self.previous_shipment_with_same_weight.combination
         )
 
     def is_current_shipment_has_max_packages(self):
         return len(self.current_combination(self.packages)) > len(
-            self.previous_package_combination_with_same_weight.packages
+            self.previous_shipment_with_same_weight.combination
         )
 
     def is_current_shipment_has_max_weight(self):
-
-        return len(self.current_combination(self.packages).weight) > len(
-            self.previous_package_combination_with_same_weight.weight
+        return (
+            self.weight_of_current_combination(self.packages)
+            > self.previous_shipment_with_same_weight.weight
         )
 
-    def current_shipment_delivery_time(self):
-        array = max(
-            [
-                package.delivery_time
-                for package in self.previous_package_combination(self.packages).packages
-                + [self.get_current_package(self.packages)]
-            ]
+    def is_current_shipment_has_same_weight(self):
+        return (
+            self.weight_of_current_combination(self.packages)
+            == self.previous_shipment_with_same_weight.weight
         )
-        return array * 2
 
     def is_current_shipment_has_low_delivery_time(self):
         return (
-            array_ops.current_shipment_delivery_time()
-            <= array_ops.previous_shipment_with_same_weight_delivery_time()
+            self.current_shipment_delivery_time(self.packages)
+            <= self.previous_shipment_with_same_weight_delivery_time()
         )
 
     def previous_shipment_with_same_weight_delivery_time(self):
-        return self.previous_package_combination_with_same_weight.total_delivery_time
+        return self.previous_shipment_with_same_weight.total_delivery_time
 
-    def is_current_package_weight_can_contain_in_current_max_weight(self):
+    def is_current_shipment_weight_can_contain_in_current_max_weight(self):
         return self.get_current_package(self.packages).weight <= self.col
 
     def assign_zero(self):
@@ -78,11 +68,6 @@ class ArrayOperation(ArrayOpsHelpers):
             self.get_current_package(self.packages)
         )
 
-    def assign_previous_package(self):
-        self.array_2d[self.row][
-            self.col
-        ] = self.previous_package_combination_with_same_weight
-
     def assign_current_shipment(self):
         self.array_2d[self.row][self.col] = CellValue().add_package_to_combination(
             self.previous_package_combination(self.packages),
@@ -90,20 +75,18 @@ class ArrayOperation(ArrayOpsHelpers):
         )
 
     def assign_previous_shipment(self):
-        self.array_2d[self.row][
-            self.col
-        ] = self.previous_package_combination_with_same_weight
+        self.array_2d[self.row][self.col] = self.previous_shipment_with_same_weight
 
 
 class CellValue:
     def __init__(self):
-        self.packages = []
+        self.combination = []
         self.weight = 0
         self.total_delivery_time = 0.0
 
     @property
     def update_weight(self):
-        weight_array = [package.weight for package in self.packages]
+        weight_array = [package.weight for package in self.combination]
         self.weight = functools.reduce(self.add, weight_array)
 
     @staticmethod
@@ -112,11 +95,11 @@ class CellValue:
 
     @property
     def update_delivery_time(self):
-        delivery_time_array = [package.delivery_time for package in self.packages]
+        delivery_time_array = [package.delivery_time for package in self.combination]
         self.total_delivery_time = max(delivery_time_array) * 2
 
     def add_package_to_combination(self, instance, package):
-        self.packages = instance.packages + [package]
+        self.combination = instance.combination + [package]
         self.update_weight
         self.update_delivery_time
         return self
