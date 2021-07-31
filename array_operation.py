@@ -84,14 +84,14 @@ class CellValue:
         self.weight = 0
         self.total_delivery_time = 0.0
 
+    @staticmethod
+    def add(a, b):
+        return a + b
+
     @property
     def update_weight(self):
         weight_array = [package.weight for package in self.combination]
         self.weight = functools.reduce(self.add, weight_array)
-
-    @staticmethod
-    def add(a, b):
-        return a + b
 
     @property
     def update_delivery_time(self):

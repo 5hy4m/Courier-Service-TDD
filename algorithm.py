@@ -1,7 +1,7 @@
 from array_operation import ArrayOperation
 
 
-class Algorithm:
+class ShipmentFinder:
     def __init__(self, no_of_packages, max_weight, packages):
         self.array_ops = ArrayOperation
         self.no_of_rows = no_of_packages
@@ -11,11 +11,6 @@ class Algorithm:
             self.no_of_rows, self.no_of_columns
         )
 
-    def start(self):
-        self.solve(0, 0)
-        self.print_array(self.array_2d)
-        print("DONE")
-
     def print_array(self, array_2d):
         for row in array_2d:
             row_ele = []
@@ -24,6 +19,8 @@ class Algorithm:
             print(row_ele)
 
     def find(self):
+        self.solve(0, 0)
+        # self.print_array(self.array_2d)
         return self.array_2d[-1][-1]
 
     def solve(self, row, col):
@@ -42,7 +39,7 @@ class Algorithm:
                         array_ops.is_current_shipment_has_max_packages()
                         or (
                             array_ops.is_current_shipment_has_same_no_of_packages()
-                            and array_ops.is_current_shipment_has_max_weight
+                            and array_ops.is_current_shipment_has_max_weight()
                         )
                         or (
                             array_ops.is_current_shipment_has_same_weight()

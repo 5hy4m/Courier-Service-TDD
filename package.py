@@ -25,5 +25,4 @@ class Package:
 
     def calculate_delivery_time(self, current_time, max_speed):
         self.delivery_time = self.truncate(self.distance / max_speed, 2)
-        # self.delivery_time = round(current_time + delivery_time, 2)
-        return self.delivery_time
+        self.delivery_time = round(current_time + self.delivery_time, 2)

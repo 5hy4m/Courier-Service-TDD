@@ -6,7 +6,9 @@ from package_manager import PackageManager
 
 def printOutput(packages):
     for package in packages:
-        print(f"{package.id} {int(package.discount)} {int(package.delivery_cost)}")
+        print(
+            f"{package.id} {int(package.discount)} {int(package.delivery_cost)} {package.delivery_time}"
+        )
 
 
 def main():

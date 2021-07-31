@@ -75,7 +75,7 @@ class InputParser:
         max_weight = self.typeConvert(max_weight, int)
         speed = self.typeConvert(speed, int)
 
-        for _ in range(no_of_vehicles - 1):
+        for _ in range(no_of_vehicles):
             self.vehicles.append(Vehicle(speed, max_weight))
 
     @staticmethod
